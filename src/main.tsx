@@ -1,15 +1,16 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import App from "./App.tsx";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./index.css";
-import Onboarding from "./pages/Onboarding.tsx";
-import Login from "./pages/Login.tsx";
-import SignUp from "./pages/SignUp.tsx";
+import Onboarding from "./components/Onboarding.tsx";
+import Login from "./components/auth/Login.tsx";
+import SignUp from "./components/auth/SignUp.tsx";
+import Home from "./components/Home.tsx";
+import { AuthProvider } from "./context/AuthContext.tsx";
 
 const router = createBrowserRouter([
   {
-    path: "/onboarding",
+    path: "/",
     element: <Onboarding />,
     errorElement: <p>404 Not Found</p>,
   },
@@ -24,14 +25,16 @@ const router = createBrowserRouter([
     errorElement: <p>404 Not Found</p>,
   },
   {
-    path: "/",
-    element: <App />,
+    path: "/home",
+    element: <Home />,
     errorElement: <p>404 Not Found</p>,
   },
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <AuthProvider>
+      <RouterProvider router={router} />
+    </AuthProvider>
   </React.StrictMode>,
 );
