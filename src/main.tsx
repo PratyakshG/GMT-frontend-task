@@ -6,7 +6,7 @@ import Onboarding from "./components/Onboarding.tsx";
 import Login from "./components/auth/Login.tsx";
 import SignUp from "./components/auth/SignUp.tsx";
 import Home from "./components/Home.tsx";
-import { AuthProvider } from "./context/AuthContext.tsx";
+// import { AuthProvider } from "./context/AuthContext.tsx";
 
 const router = createBrowserRouter([
   {
