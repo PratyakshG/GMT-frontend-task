@@ -1,22 +1,33 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { FaShareAlt } from "react-icons/fa";
+import { useSearchParams } from "react-router-dom";
 
 function Home() {
+  const [searchParams, setSearchParams] = useSearchParams();
   const [quote, setQuote] = useState<string>("");
+  const speedParam = searchParams.get("speed") || "1";
+  const countdownParam = searchParams.get("countdown") === "true";
 
   // speed factor to control the countdown pace
-  const [speed, setSpeed] = useState("1");
+  const [speed, setSpeed] = useState(speedParam);
 
   //boolean to start the countdown function
-  const [startCountdown, setStartCountdown] = useState<boolean>(false);
+  const [startCountdown, setStartCountdown] = useState<boolean>(countdownParam);
 
   //provides the current time
-  const [currentTime, setCurrentTime] = useState<Date>(new Date());
+  const [currentTime, setCurrentTime] = useState<Date>(
+    searchParams.get("currentTime")
+      ? new Date(parseInt(searchParams.get("currentTime") || "0"))
+      : new Date(),
+  );
 
   //provides the time to when the clock should move during countdown
-  const [targetTime, setTargetTime] = useState<Date>(new Date());
-
+  const [targetTime, setTargetTime] = useState<Date>(
+    searchParams.get("targetTime")
+      ? new Date(parseInt(searchParams.get("targetTime") || "0"))
+      : new Date(new Date().getTime() - 120 * 60 * 1000),
+  );
   // function to fetch random quotes
   useEffect(() => {
     const getQuotes = async () => {
@@ -69,6 +80,16 @@ function Home() {
     };
   }, [startCountdown, targetTime, speed]);
 
+  //update query parameters
+  useEffect(() => {
+    setSearchParams({
+      currentTime: currentTime.getTime().toString(),
+      targetTime: targetTime.getTime().toString(),
+      speed: speed,
+      countdown: startCountdown.toString(),
+    });
+  }, [currentTime, targetTime, speed, startCountdown, setSearchParams]);
+
   const hourDeg =
     ((currentTime.getHours() % 12) + currentTime.getMinutes() / 60) * 30;
 
@@ -80,24 +101,16 @@ function Home() {
     360;
 
   const handleShare = () => {
-    // const url = new URL(window.location.href);
-    const currentTimeParam = currentTime.getTime();
-    const targetTimeParam = targetTime.getTime();
-
-    // url.searchParams.set("currentTime", currentTimeParam.toLocaleString());
-    // url.searchParams.set("targetTime", targetTimeParam.toLocaleString());
-    // url.searchParams.set("speed");
-
     console.log(window.location.href);
 
     navigator.share({
-      url: `${window.location.href}?currentTime=${currentTimeParam}&targetTime=${targetTimeParam}`,
+      url: `${window.location.href}?currentTime=${currentTime}&targetTime=${targetTime}&speed=${speed}&countdown=${startCountdown}`,
     });
   };
 
   return (
     <div className="mt-[76px] max-h-dvh w-dvw flex flex-col items-center gap-5 px-6 drop-shadow-md">
-      <div className="flex w-full items-center justify-between gap-5">
+      <div className="flex w-full items-center justify-between gap-4">
         {/* Target Time */}
         <div className="border-2 border-primary px-4 py-2 rounded-lg w-full">
           <div className="font-semibold">Target Time</div>
@@ -105,8 +118,10 @@ function Home() {
         </div>
 
         {/* Current Time */}
-        <div className="text-right border-2 border-primary px-4 py-2 rounded-lg w-full">
-          <div className="font-semibold">Current Time</div>
+        <div className="text-right border-2 border-primary px-4 py-2 rounded-lg w-full text-nowrap">
+          <div className="font-semibold">
+            {startCountdown ? "Remaining Time" : "Current Time"}
+          </div>
           <div className="text-sm">{currentTime.toLocaleTimeString()}</div>
         </div>
       </div>
