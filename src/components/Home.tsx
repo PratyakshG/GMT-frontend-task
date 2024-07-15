@@ -75,8 +75,10 @@ function Home() {
 
   //update query parameters
   useEffect(() => {
-    setSearchParams({
-      speed: speed,
+    setSearchParams((prevParams) => {
+      const newParams = new URLSearchParams(prevParams.toString());
+      newParams.set("speed", speed.toString());
+      return newParams;
     });
   }, [speed, setSearchParams]);
 
@@ -92,10 +94,20 @@ function Home() {
 
   const handleShare = () => {
     console.log(window.location.href);
+    const speedParam = speed;
 
-    navigator.share({
-      url: `${window.location.href}`,
-    });
+    const shareUrl = new URL(window.location.href);
+    shareUrl.searchParams.set("speed", speedParam.toString());
+
+    if (navigator.share) {
+      navigator.share({
+        title: "Countdown Timer",
+        url: shareUrl.toString(),
+      });
+    } else {
+      // Fallback for browsers that don't support the Web Share API
+      alert(`Share this link: ${shareUrl.toString()}`);
+    }
   };
 
   return (
