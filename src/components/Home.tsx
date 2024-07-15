@@ -81,14 +81,6 @@ function Home() {
   }, [startCountdown, targetTime, speed]);
 
   //update query parameters
-  useEffect(() => {
-    setSearchParams({
-      currentTime: currentTime.getTime().toString(),
-      targetTime: targetTime.getTime().toString(),
-      speed: speed,
-      countdown: startCountdown.toString(),
-    });
-  }, [currentTime, targetTime, speed, startCountdown, setSearchParams]);
 
   const hourDeg =
     ((currentTime.getHours() % 12) + currentTime.getMinutes() / 60) * 30;
@@ -102,6 +94,12 @@ function Home() {
 
   const handleShare = () => {
     console.log(window.location.href);
+    setSearchParams({
+      currentTime: currentTime.getTime().toString(),
+      targetTime: targetTime.getTime().toString(),
+      speed: speed,
+      countdown: startCountdown.toString(),
+    });
 
     navigator.share({
       url: `${window.location.href}`,
