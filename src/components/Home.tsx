@@ -7,26 +7,19 @@ function Home() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [quote, setQuote] = useState<string>("");
   const speedParam = searchParams.get("speed") || "1";
-  const countdownParam = searchParams.get("countdown") === "true";
 
   // speed factor to control the countdown pace
   const [speed, setSpeed] = useState(speedParam);
 
   //boolean to start the countdown function
-  const [startCountdown, setStartCountdown] = useState<boolean>(countdownParam);
+  const [startCountdown, setStartCountdown] = useState<boolean>(false);
 
   //provides the current time
-  const [currentTime, setCurrentTime] = useState<Date>(
-    searchParams.get("currentTime")
-      ? new Date(parseInt(searchParams.get("currentTime") || "0"))
-      : new Date(),
-  );
+  const [currentTime, setCurrentTime] = useState<Date>(new Date());
 
   //provides the time to when the clock should move during countdown
   const [targetTime, setTargetTime] = useState<Date>(
-    searchParams.get("targetTime")
-      ? new Date(parseInt(searchParams.get("targetTime") || "0"))
-      : new Date(new Date().getTime() - 120 * 60 * 1000),
+    new Date(new Date().getTime() - 120 * 60 * 1000),
   );
   // function to fetch random quotes
   useEffect(() => {
@@ -81,6 +74,11 @@ function Home() {
   }, [startCountdown, targetTime, speed]);
 
   //update query parameters
+  useEffect(() => {
+    setSearchParams({
+      speed: speed,
+    });
+  }, [speed, setSearchParams]);
 
   const hourDeg =
     ((currentTime.getHours() % 12) + currentTime.getMinutes() / 60) * 30;
@@ -94,12 +92,6 @@ function Home() {
 
   const handleShare = () => {
     console.log(window.location.href);
-    setSearchParams({
-      currentTime: currentTime.getTime().toString(),
-      targetTime: targetTime.getTime().toString(),
-      speed: speed,
-      countdown: startCountdown.toString(),
-    });
 
     navigator.share({
       url: `${window.location.href}`,
