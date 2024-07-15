@@ -1,8 +1,9 @@
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { BiHide } from "react-icons/bi";
 import { FcGoogle } from "react-icons/fc";
 import { auth, googleProvider } from "../../firebase-config";
 import {
+  onAuthStateChanged,
   signInWithEmailAndPassword,
   signInWithPopup,
   signOut,
@@ -19,6 +20,21 @@ const Login = () => {
   const [isLoginComplete, setIsLoginComplete] = useState(false);
   const navigate = useNavigate();
 
+  const Logout = () => {
+    signOut(auth);
+    setIsLoginComplete(false);
+    navigate("/login");
+  };
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setIsLoginComplete(true);
+      }
+    });
+    return () => unsubscribe();
+  }, [navigate]);
+
   const handleLogin = (e: FormEvent) => {
     e.preventDefault();
 
@@ -28,7 +44,7 @@ const Login = () => {
       signInWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
           console.log(userCredential.user);
-          handleLoginComplete();
+          setIsLoginComplete(true);
         })
         .catch((error) => {
           alert(error);
@@ -41,27 +57,11 @@ const Login = () => {
     signInWithPopup(auth, googleProvider)
       .then((result) => {
         console.log(result);
-        handleLoginComplete();
+        setIsLoginComplete(true);
       })
       .catch((error) => {
         console.error("Error logging in with Google: ", error);
       });
-  };
-
-  // funtion to set the login to true after the login is complete
-  const handleLoginComplete = () => {
-    setIsLoginComplete(true);
-  };
-
-  // funtion to navigate to home page after login is complete
-  const navigateToHome = () => {
-    navigate("/home");
-    setIsLoginComplete(false);
-  };
-
-  const Logout = () => {
-    signOut(auth);
-    setIsLoginComplete(false);
   };
 
   return (
@@ -81,7 +81,7 @@ const Login = () => {
           <h5 className="text-2xl font-semibold">Login Complete</h5>
           <div className="flex flex-col gap-[22px] w-full">
             <button
-              onClick={navigateToHome}
+              onClick={() => navigate("/home")}
               className="w-full bg-primary py-4 rounded-full font-semibold text-white text-sm"
             >
               Go to Tracking Screen

@@ -10,13 +10,13 @@ interface CardProps {
   heading: string;
   text: string;
   children: React.ReactNode;
-  classname?: string;
+  className?: string;
 }
 
-const Card: React.FC<CardProps> = ({ heading, text, children, classname }) => {
+const Card: React.FC<CardProps> = ({ heading, text, children, className }) => {
   return (
     <div
-      className={`bg-[#FE8C00] w-full h-full max-h-[400px] text-center rounded-[48px] flex flex-col text-white gap-4 transition-all duration-300 ${classname}`}
+      className={`bg-[#FE8C00] w-full h-full max-h-[400px] text-center rounded-[48px] flex flex-col text-white gap-4 transition-all duration-300 ${className}`}
     >
       {/* Heading */}
       <div className="text-[32px] px-[30px] pt-8 leading-10 font-semibold transition-all duration-300">
@@ -53,6 +53,10 @@ const Onboarding = () => {
     },
   ];
 
+  const navigateLogin = () => {
+    navigate("/login");
+  };
+
   return (
     <div
       style={{
@@ -66,7 +70,7 @@ const Onboarding = () => {
           key={index}
           heading={item.heading}
           text={item.text}
-          classname={slide === index ? "block" : "hidden"}
+          className={slide === index ? "block" : "hidden"}
         >
           <div className="flex flex-col items-center justify-between h-full pb-8">
             {/* Indicators */}
@@ -82,11 +86,7 @@ const Onboarding = () => {
             </div>
 
             {slide === content.length - 1 ? (
-              <button
-                onClick={() => {
-                  navigate("/login");
-                }}
-              >
+              <button onClick={navigateLogin}>
                 <div className="flex items-center justify-center border-white border-2 p-4 rounded-full border-s-[#ffffff16] rotate-45">
                   <div className="bg-white p-5 rounded-full -rotate-45">
                     <GoArrowRight

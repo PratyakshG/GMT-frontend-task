@@ -1,9 +1,12 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { FaShareAlt } from "react-icons/fa";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { auth } from "../firebase-config";
+import { signOut } from "firebase/auth";
 
 function Home() {
+  const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const [quote, setQuote] = useState<string>("");
   const speedParam = searchParams.get("speed") || "1";
@@ -51,8 +54,6 @@ function Home() {
 
   // function to get the current time and target time for the countdown
   useEffect(() => {
-    //get time from search parameters of the shared url
-
     const updateTime = setInterval(() => {
       if (startCountdown) {
         setCurrentTime((prevTime) => {
@@ -110,21 +111,26 @@ function Home() {
     }
   };
 
+  const Logout = () => {
+    signOut(auth);
+    navigate("/login");
+  };
+
   return (
     <div className="mt-[76px] max-h-dvh w-dvw flex flex-col items-center gap-5 px-6 drop-shadow-md">
-      <div className="flex w-full items-center justify-between gap-4">
+      <div className="flex w-full items-center justify-between gap-4 h-16">
         {/* Target Time */}
-        <div className="border-2 border-primary px-4 py-2 rounded-lg w-full">
+        <div className="border-2 border-primary rounded-lg w-full h-full flex flex-col p-2 items-center justify-center">
           <div className="font-semibold">Target Time</div>
           <div className="text-sm">{targetTime.toLocaleTimeString()}</div>
         </div>
 
-        {/* Current Time */}
-        <div className="text-right border-2 border-primary px-4 py-2 rounded-lg w-full text-nowrap">
-          <div className="font-semibold">
-            {startCountdown ? "Remaining Time" : "Current Time"}
-          </div>
-          <div className="text-sm">{currentTime.toLocaleTimeString()}</div>
+        {/* Logout */}
+        <div
+          className="text-right border-2 border-primary h-full rounded-lg w-full text-nowrap flex items-center justify-center"
+          onClick={Logout}
+        >
+          <div className="text-semibold">Logout</div>
         </div>
       </div>
 
