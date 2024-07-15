@@ -55,7 +55,7 @@ const Login = () => {
 
   // funtion to navigate to home page after login is complete
   const navigateToHome = () => {
-    navigate("/home", { replace: true });
+    navigate("/home");
     setIsLoginComplete(false);
   };
 

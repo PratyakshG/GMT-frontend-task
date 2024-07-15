@@ -4,7 +4,7 @@ import background2 from "../assets/onboarding_image_2.png";
 import background3 from "../assets/onboarding_image_3.png";
 import { BsArrowRight } from "react-icons/bs";
 import { GoArrowRight } from "react-icons/go";
-import { Link } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 
 interface CardProps {
   heading: string;
@@ -81,9 +81,12 @@ const Onboarding = () => {
             </div>
 
             {slide === content.length - 1 ? (
-              <Link
-                to="/login"
-                replace
+              <button
+                onClick={() => {
+                  Navigate({
+                    to: "/login",
+                  });
+                }}
               >
                 <div className="flex items-center justify-center border-white border-2 p-4 rounded-full border-s-[#ffffff16] rotate-45">
                   <div className="bg-white p-5 rounded-full -rotate-45">
@@ -93,7 +96,7 @@ const Onboarding = () => {
                     />
                   </div>
                 </div>
-              </Link>
+              </button>
             ) : (
               <div className="w-full flex justify-between items-center font-semibold px-8">
                 <button
