@@ -4,7 +4,7 @@ import background2 from "../assets/onboarding_image_2.png";
 import background3 from "../assets/onboarding_image_3.png";
 import { BsArrowRight } from "react-icons/bs";
 import { GoArrowRight } from "react-icons/go";
-import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 interface CardProps {
   heading: string;
@@ -32,6 +32,7 @@ const Card: React.FC<CardProps> = ({ heading, text, children, classname }) => {
 };
 
 const Onboarding = () => {
+  const navigate = useNavigate();
   const [slide, setSlide] = useState<number>(0);
 
   const content = [
@@ -83,9 +84,7 @@ const Onboarding = () => {
             {slide === content.length - 1 ? (
               <button
                 onClick={() => {
-                  Navigate({
-                    to: "/login",
-                  });
+                  navigate("/login");
                 }}
               >
                 <div className="flex items-center justify-center border-white border-2 p-4 rounded-full border-s-[#ffffff16] rotate-45">
