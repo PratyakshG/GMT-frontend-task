@@ -81,6 +81,7 @@ const Login = () => {
           <h5 className="text-2xl font-semibold">Login Complete</h5>
           <div className="flex flex-col gap-[22px] w-full">
             <button
+              disabled={isLoginComplete ? false : true}
               onClick={() => navigate("/home")}
               className="w-full bg-primary py-4 rounded-full font-semibold text-white text-sm"
             >
