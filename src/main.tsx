@@ -12,22 +12,18 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <Onboarding />,
-    errorElement: <p>404 Not Found</p>,
   },
   {
     path: "/login",
     element: <Login />,
-    errorElement: <p>404 Not Found</p>,
   },
   {
     path: "/signup",
     element: <SignUp />,
-    errorElement: <p>404 Not Found</p>,
   },
   {
     path: "/home",
     element: <Home />,
-    errorElement: <p>404 Not Found</p>,
   },
 ]);
 
