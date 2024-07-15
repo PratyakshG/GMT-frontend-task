@@ -11,6 +11,7 @@ const SignUp: React.FC = () => {
   const [password, setPassword] = useState("");
   const [userName, setUserName] = useState("");
   const [showPassword, setShowPassword] = useState(true);
+  const [checked, setChecked] = useState(false);
   const navigate = useNavigate();
 
   const handleSignup = async (e: FormEvent) => {
@@ -23,12 +24,12 @@ const SignUp: React.FC = () => {
         },
       );
       navigate("/login");
+      setEmail("");
+      setPassword("");
+      setUserName("");
     } catch (error) {
-      console.error("Error signing up: ", error);
+      alert(error);
     }
-    setEmail("");
-    setPassword("");
-    setUserName("");
   };
 
   return (
@@ -98,6 +99,9 @@ const SignUp: React.FC = () => {
             <input
               type="checkbox"
               className="border border-gray-1 accent-primary h-5 w-5 rounded"
+              onChange={(e) => {
+                setChecked(e.target.checked);
+              }}
             />
             <span className="text-black-1 font-medium">
               I Agree with{" "}
@@ -112,7 +116,8 @@ const SignUp: React.FC = () => {
 
         <button
           type="submit"
-          className="bg-primary py-4 rounded-full font-semibold text-white"
+          disabled={checked ? false : true}
+          className="bg-primary py-4 rounded-full font-semibold text-white disabled:opacity-50 transition-all duration-300"
           onClick={handleSignup}
         >
           Register

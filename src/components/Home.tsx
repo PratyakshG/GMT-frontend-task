@@ -104,7 +104,7 @@ function Home() {
     console.log(window.location.href);
 
     navigator.share({
-      url: `${window.location.href}?currentTime=${currentTime}&targetTime=${targetTime}&speed=${speed}&countdown=${startCountdown}`,
+      url: `${window.location.href}`,
     });
   };
 

@@ -22,14 +22,18 @@ const Login = () => {
   const handleLogin = (e: FormEvent) => {
     e.preventDefault();
 
-    signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        console.log(userCredential.user);
-        handleLoginComplete();
-      })
-      .catch((error) => {
-        console.error("Error logging in: ", error);
-      });
+    if (!email || !password) {
+      alert("please enter all the fields");
+    } else {
+      signInWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+          console.log(userCredential.user);
+          handleLoginComplete();
+        })
+        .catch((error) => {
+          alert(error);
+        });
+    }
   };
 
   const handleGoogleLogin = (e: FormEvent) => {
