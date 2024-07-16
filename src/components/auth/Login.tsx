@@ -30,6 +30,8 @@ const Login = () => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
         setIsLoginComplete(true);
+      } else {
+        navigate("/login");
       }
     });
     return () => unsubscribe();
@@ -82,7 +84,10 @@ const Login = () => {
           <div className="flex flex-col gap-[22px] w-full">
             <button
               disabled={isLoginComplete ? false : true}
-              onClick={() => navigate("/home")}
+              onClick={() => {
+                setIsLoginComplete(false);
+                navigate("/home");
+              }}
               className="w-full bg-primary py-4 rounded-full font-semibold text-white text-sm"
             >
               Go to Tracking Screen

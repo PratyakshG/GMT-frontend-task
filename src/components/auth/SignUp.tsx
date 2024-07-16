@@ -33,7 +33,7 @@ const SignUp: React.FC = () => {
   };
 
   return (
-    <div className="max-h-dvh w-screen flex flex-col px-6 pt-[76px] overflow-hidden">
+    <div className="max-h-dvh w-dvw flex flex-col px-6 pt-[76px] overflow-hidden">
       <div className="gap-2">
         <h1 className="text-[32px] font-semibold leading-10 text-black-1">
           Create your new account.

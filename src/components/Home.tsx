@@ -4,6 +4,7 @@ import { FaShareAlt } from "react-icons/fa";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { auth } from "../firebase-config";
 import { signOut } from "firebase/auth";
+import { BiLogOut } from "react-icons/bi";
 
 function Home() {
   const navigate = useNavigate();
@@ -113,24 +114,28 @@ function Home() {
 
   const Logout = () => {
     signOut(auth);
-    navigate("/login");
+    navigate("/login"),
+      {
+        replace: true,
+      };
   };
 
   return (
     <div className="mt-[76px] max-h-dvh w-dvw flex flex-col items-center gap-5 px-6 drop-shadow-md">
       <div className="flex w-full items-center justify-between gap-4 h-16">
+        {/* Logout */}
+        <div
+          className="text-right border-2 border-primary h-full rounded-lg w-full text-nowrap flex items-center justify-center gap-3 bg-red-500 text-white"
+          onClick={Logout}
+        >
+          <BiLogOut size={20} />
+          <div className="text-semibold">Logout</div>
+        </div>
+
         {/* Target Time */}
         <div className="border-2 border-primary rounded-lg w-full h-full flex flex-col p-2 items-center justify-center">
           <div className="font-semibold">Target Time</div>
           <div className="text-sm">{targetTime.toLocaleTimeString()}</div>
-        </div>
-
-        {/* Logout */}
-        <div
-          className="text-right border-2 border-primary h-full rounded-lg w-full text-nowrap flex items-center justify-center"
-          onClick={Logout}
-        >
-          <div className="text-semibold">Logout</div>
         </div>
       </div>
 

@@ -63,7 +63,7 @@ const Onboarding = () => {
         backgroundImage: `url(${content[slide].image})`,
         transition: "background ease-in 300ms",
       }}
-      className="h-screen w-screen flex items-end justify-center bg-center bg-cover pb-10 px-8"
+      className="h-dvh w-dvw flex items-end justify-center bg-center bg-cover pb-10 px-8"
     >
       {content.map((item, index) => (
         <Card
